@@ -127,3 +127,13 @@ address.address_id < shipment.address_id
 ## 🏁 Conclusion
 
 This database design is normalized, scalable, and suitable for real-world e-commerce systems.
+
+---
+## ER Diagram
+
+The ER diagram is included in this repository as: 
+
+<p align="center">
+<img src="ER Diagram.png"n width="800">
+</p>
+
