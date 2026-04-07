@@ -1,0 +1,112 @@
+entity-relationship-diagram
+
+customer [icon:user, color: green] {
+  customer_id serial pk
+  customer_name text not null
+  customer_email varchar(100) unique not null
+  customer_phone char(15)
+
+  created_at timestamp
+  updated_at timestamp
+}
+
+address [icon:google-maps, color: blue] {
+  address_id serial pk
+  customer_id int fk
+
+  address1 varchar(250)
+  address2 varchar(250)
+  landmark varchar(50)
+  city varchar(50)
+  state varchar(50)
+
+  created_at timestamp
+  updated_at timestamp
+}
+
+orders [icon:shopping-bag, color: orange] {
+  order_id serial pk
+  customer_id int fk
+
+  order_date timestamp
+  status varchar(50)
+  total_amount decimal(10,2)
+  discount_percentage decimal(5,2)
+
+  created_at timestamp
+  updated_at timestamp
+}
+
+order_item [icon:shopping-cart, color: purple] {
+  order_item_id serial pk
+  order_id int fk
+  product_id int fk
+
+  quantity int
+  price_at_purchase decimal(10,2)
+
+  created_at timestamp
+}
+
+product [icon:shirt, color: red] {
+  product_id serial pk
+
+  name varchar(100)
+  description text
+  price decimal(10,2)
+
+  product_type enum('thrifted','handmade')
+  category varchar(50)
+  size varchar(20)
+  color varchar(30)
+
+  condition enum('new','used','vintage')
+  is_unique boolean default false
+
+  created_at timestamp
+}
+
+inventory [icon:bar-chart, color: Black ] {
+  inventory_id serial pk
+  product_id int unique fk
+
+  quantity_available int default 0
+
+  created_at timestamp
+}
+
+payment[icon: credit-card, color: yellow]{
+  payment_id serial pk
+  order_id int unique fk
+
+  payment_date timestamp
+  amount decimal(10,2)
+
+  payment_method enum('upi','card','cod')
+  payment_status enum('paid','pending','failed')
+}
+shipment [icon:car, color: pink] {
+  shipment_id serial pk
+  order_id int unique fk
+  address_id int fk
+
+  shipped_date timestamp
+  delivery_date timestamp
+
+  shipping_status enum('pending','shipped','delivered')
+}
+
+customer.customer_id < address.customer_id
+
+customer.customer_id < orders.customer_id
+
+orders.order_id < order_item.order_id
+product.product_id < order_item.product_id
+
+product.product_id - inventory.product_id
+
+orders.order_id - payment.order_id
+
+orders.order_id < shipment.order_id
+
+address.address_id < shipment.address_id
